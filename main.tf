@@ -37,7 +37,8 @@ module "alb_ingress" {
 }
 
 module "acm_certificate" {
-  source = "git@ssh.dev.azure.com:v3/nventive/Terraform-Modules/aws-acm-certificate?ref=master"
+  source  = "nventive/acm-certificate/aws"
+  version = "1.0.1"
 
   enabled = local.use_acm && local.enabled
 

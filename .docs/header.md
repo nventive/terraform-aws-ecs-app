@@ -4,7 +4,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](LICENSE) [![Latest Release](https://img.shields.io/github/release/nventive/terraform-aws-ecs-app.svg?style=flat-square)](https://github.com/nventive/terraform-aws-ecs-app/releases/latest)
 
-Terraform module to create an ECS application.
+Terraform module to provision an ECS application.
 
 ---
 
