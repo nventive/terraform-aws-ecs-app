@@ -5,7 +5,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](LICENSE) [![Latest Release](https://img.shields.io/github/release/nventive/terraform-aws-ecs-app.svg?style=flat-square)](https://github.com/nventive/terraform-aws-ecs-app/releases/latest)
 
-Terraform module to create an ECS application.
+Terraform module to provision an ECS application.
 
 ---
 
@@ -94,7 +94,7 @@ module "ecs_app" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_acm_certificate"></a> [acm\_certificate](#module\_acm\_certificate) | git@ssh.dev.azure.com:v3/nventive/Terraform-Modules/aws-acm-certificate | master |
+| <a name="module_acm_certificate"></a> [acm\_certificate](#module\_acm\_certificate) | nventive/acm-certificate/aws | 1.0.1 |
 | <a name="module_alb_alarms"></a> [alb\_alarms](#module\_alb\_alarms) | cloudposse/alb-target-group-cloudwatch-sns-alarms/aws | 0.17.0 |
 | <a name="module_alb_ingress"></a> [alb\_ingress](#module\_alb\_ingress) | cloudposse/alb-ingress/aws | 0.25.1 |
 | <a name="module_autoscaling"></a> [autoscaling](#module\_autoscaling) | cloudposse/ecs-cloudwatch-autoscaling/aws | 0.7.3 |
