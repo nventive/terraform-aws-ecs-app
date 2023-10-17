@@ -17,3 +17,8 @@ output "task_definition_family" {
   value       = module.service.task_definition_family
   description = "ECS task definition family"
 }
+
+output "alb_listener_arns" {
+  description = "The ARN of the ALB listeners."
+  value       = aws_lb_listener.app.*.arn
+}
