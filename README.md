@@ -221,6 +221,7 @@ module "ecs_app" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_alb_listener_arns"></a> [alb\_listener\_arns](#output\_alb\_listener\_arns) | The ARN of the ALB listeners. |
 | <a name="output_service_arn"></a> [service\_arn](#output\_service\_arn) | ECS Service ARN |
 | <a name="output_service_name"></a> [service\_name](#output\_service\_name) | ECS Service name |
 | <a name="output_task_definition_family"></a> [task\_definition\_family](#output\_task\_definition\_family) | ECS task definition family |
