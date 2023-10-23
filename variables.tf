@@ -526,3 +526,9 @@ variable "container_definition_json" {
     [ecs_task_definition#container_definitions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition#container_definitions)
     EOT
 }
+
+variable "default_service_security_group_enabled" {
+  type        = bool
+  default     = true
+  description = "Enables the creation of a default security group for the ECS Service"
+}
