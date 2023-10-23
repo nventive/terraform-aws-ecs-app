@@ -29,6 +29,7 @@ module "alb_ingress" {
   port                         = var.service_container_port
   protocol                     = var.service_container_protocol
   health_check_path            = var.healthcheck_path
+  health_check_protocol        = var.service_container_protocol
   default_target_group_enabled = true
   health_check_matcher         = var.health_check_matcher
 
