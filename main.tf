@@ -1,10 +1,11 @@
 locals {
-  use_acm       = (var.dns_alias_enabled && length(var.aliases) != 0) || var.certificate_type == "import"
-  acm_alt_names = length(var.aliases) > 1 ? slice(var.aliases, 1, length(var.aliases)) : []
-  protocol      = aws_lb_listener.app[0].protocol == "HTTPS" ? "https" : "http"
-  address       = var.dns_alias_enabled ? var.aliases[0] : data.aws_lb.alb.dns_name
-  url           = "${local.protocol}://${local.address}:${aws_lb_listener.app[0].port}"
-  enabled       = module.this.enabled
+  use_acm                  = (var.dns_alias_enabled && length(var.aliases) != 0) || var.certificate_type == "import"
+  acm_alt_names            = length(var.aliases) > 1 ? slice(var.aliases, 1, length(var.aliases)) : []
+  protocol                 = aws_lb_listener.app[0].protocol == "HTTPS" ? "https" : "http"
+  address                  = var.dns_alias_enabled ? var.aliases[0] : data.aws_lb.alb.dns_name
+  url                      = "${local.protocol}://${local.address}:${aws_lb_listener.app[0].port}"
+  enabled                  = module.this.enabled
+  ecs_service_task_sg_name = "${module.this.id}-ecs-service-task"
 }
 
 data "aws_lb" "alb" {
@@ -29,6 +30,7 @@ module "alb_ingress" {
   port                         = var.service_container_port
   protocol                     = var.service_container_protocol
   health_check_path            = var.healthcheck_path
+  health_check_protocol        = var.service_container_protocol
   default_target_group_enabled = true
   health_check_matcher         = var.health_check_matcher
 
@@ -86,44 +88,38 @@ resource "aws_lb_listener" "app" {
   tags = module.this.tags
 }
 
-resource "aws_security_group" "service" {
-  count = local.enabled ? 1 : 0
+module "ecs_service_sg" {
+  count   = local.enabled ? 1 : 0
+  source  = "cloudposse/security-group/aws"
+  version = "2.2.0"
 
-  name_prefix = "${module.this.id}-service-task-"
-  description = "ECS service task SG for ${module.this.id}"
+  name                       = local.ecs_service_task_sg_name
+  security_group_description = "ECS service task SG for ${module.this.id}"
 
-  vpc_id = var.vpc_id
+  allow_all_egress           = true
+  create_before_destroy      = true
+  preserve_security_group_id = true
+  vpc_id                     = var.vpc_id
 
-  ingress = [
+  rules = [
     {
-      from_port        = var.service_container_port
-      to_port          = var.service_container_port
-      protocol         = "tcp"
-      cidr_blocks      = []
-      ipv6_cidr_blocks = []
-      self             = false
-      security_groups  = [var.alb_security_group_id]
-      prefix_list_ids  = []
-      description      = "Allow HTTP/S traffic from load balancer"
+      key                      = "container_ingress_port"
+      type                     = "ingress"
+      from_port                = var.service_container_port
+      to_port                  = var.service_container_port
+      protocol                 = "tcp"
+      cidr_blocks              = []
+      source_security_group_id = var.alb_security_group_id
+      self                     = false
+      description              = "Allow HTTP/S traffic from load balancer"
     }
   ]
 
-  egress = [
-    {
-      type             = "egress"
-      from_port        = 0
-      to_port          = 0 # Use from 0 to 0 for all ports, not to 65535 or the rule will always be updated.
-      protocol         = "all"
-      cidr_blocks      = ["0.0.0.0/0"]
-      ipv6_cidr_blocks = []
-      self             = false
-      security_groups  = null
-      prefix_list_ids  = []
-      description      = "Allow egress to anywhere"
-    }
-  ]
+  context = module.this.context
 
-  tags = module.this.tags
+  tags = merge(module.this.tags, {
+    Name = local.ecs_service_task_sg_name
+  })
 }
 
 resource "aws_security_group_rule" "opened_to_alb" {
@@ -145,7 +141,8 @@ module "service" {
   ecs_cluster_arn                    = var.ecs_cluster_arn
   launch_type                        = var.service_launch_type
   vpc_id                             = var.vpc_id
-  security_groups                    = concat(aws_security_group.service.*.id, var.service_security_groups)
+  security_group_enabled             = var.default_service_security_group_enabled
+  security_groups                    = concat(module.ecs_service_sg.*.id, var.service_security_groups)
   subnet_ids                         = var.subnet_ids
   ignore_changes_task_definition     = var.service_ignore_changes_task_definition
   ignore_changes_desired_count       = var.service_ignore_changes_desired_count
