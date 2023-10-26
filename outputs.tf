@@ -24,5 +24,6 @@ output "alb_listener_arns" {
 }
 
 output "ecs_service_security_group_id" {
-  value = module.ecs_service_sg.id
+  description = "The ID of the Security Group for the ECS service."
+  value       = module.ecs_service_sg.id
 }
