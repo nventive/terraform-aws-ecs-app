@@ -99,6 +99,7 @@ module "ecs_app" {
 | <a name="module_alb_ingress"></a> [alb\_ingress](#module\_alb\_ingress) | cloudposse/alb-ingress/aws | 0.25.1 |
 | <a name="module_autoscaling"></a> [autoscaling](#module\_autoscaling) | cloudposse/ecs-cloudwatch-autoscaling/aws | 0.7.3 |
 | <a name="module_ecs_alarms"></a> [ecs\_alarms](#module\_ecs\_alarms) | cloudposse/ecs-cloudwatch-sns-alarms/aws | 0.12.3 |
+| <a name="module_ecs_service_sg"></a> [ecs\_service\_sg](#module\_ecs\_service\_sg) | cloudposse/security-group/aws | 2.2.0 |
 | <a name="module_service"></a> [service](#module\_service) | cloudposse/ecs-alb-service-task/aws | 0.58.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 ## Resources
@@ -107,7 +108,6 @@ module "ecs_app" {
 |------|------|
 | [aws_cloudwatch_log_group.app](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_lb_listener.app](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
-| [aws_security_group.service](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.opened_to_alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_lb.alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/lb) | data source |
 ## Inputs
@@ -223,6 +223,7 @@ module "ecs_app" {
 | Name | Description |
 |------|-------------|
 | <a name="output_alb_listener_arns"></a> [alb\_listener\_arns](#output\_alb\_listener\_arns) | The ARN of the ALB listeners. |
+| <a name="output_ecs_service_security_group_ids"></a> [ecs\_service\_security\_group\_ids](#output\_ecs\_service\_security\_group\_ids) | n/a |
 | <a name="output_service_arn"></a> [service\_arn](#output\_service\_arn) | ECS Service ARN |
 | <a name="output_service_name"></a> [service\_name](#output\_service\_name) | ECS Service name |
 | <a name="output_task_definition_family"></a> [task\_definition\_family](#output\_task\_definition\_family) | ECS task definition family |

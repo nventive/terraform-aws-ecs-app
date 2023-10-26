@@ -22,3 +22,7 @@ output "alb_listener_arns" {
   description = "The ARN of the ALB listeners."
   value       = aws_lb_listener.app.*.arn
 }
+
+output "ecs_service_security_group_ids" {
+  value = module.ecs_service_sg.*.id
+}
