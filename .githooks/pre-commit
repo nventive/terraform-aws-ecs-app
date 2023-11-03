@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# This hook will block a commit if Terraform isn't formatted properly or if README isn't up to date.
+#
+
+[[ -f "$(which terraform)" ]] || (echo 1>&2 'Git Hooks (pre-commit): Terraform not in $PATH, can''t reformat.' && exit 1)
+terraform fmt -check 2>/dev/null || (echo 1>&2 'Git Hooks (pre-commit): Please run `terraform fmt` before committing.' && exit 1)
+
+[[ -f "$(which terraform-docs)" ]] || (echo 1>&2 'Git Hooks (pre-commit): Terraform-docs not in $PATH, can''t update README file.' && exit 1)
+curl -sLo .docs/footer.md https://gist.githubusercontent.com/nventive-devops/7892a2ac9a2cc2ea219dd81796b6ce8b/raw/readme-footer.md
+terraform-docs markdown --config .docs/terraform-docs.yaml --output-check . 1>/dev/null  2>/dev/null || (
+  echo 1>&2 'Git Hooks (pre-commit): Terraform-docs README file is out of date.'
+  echo 1>&2 'Please run `make docs` before committing '
+  exit 1
+)
