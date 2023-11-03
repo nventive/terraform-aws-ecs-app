@@ -89,9 +89,10 @@ resource "aws_lb_listener" "app" {
 }
 
 module "ecs_service_sg" {
-  count   = local.enabled ? 1 : 0
   source  = "cloudposse/security-group/aws"
   version = "2.2.0"
+
+  enabled = local.enabled
 
   name                       = local.ecs_service_task_sg_name
   security_group_description = "ECS service task SG for ${module.this.id}"
@@ -142,7 +143,7 @@ module "service" {
   launch_type                        = var.service_launch_type
   vpc_id                             = var.vpc_id
   security_group_enabled             = var.default_service_security_group_enabled
-  security_groups                    = concat(module.ecs_service_sg.*.id, var.service_security_groups)
+  security_groups                    = concat([module.ecs_service_sg.id], var.service_security_groups)
   subnet_ids                         = var.subnet_ids
   ignore_changes_task_definition     = var.service_ignore_changes_task_definition
   ignore_changes_desired_count       = var.service_ignore_changes_desired_count
