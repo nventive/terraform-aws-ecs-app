@@ -243,6 +243,8 @@ module "ecs_alarms" {
   ))
   memory_utilization_low_ok_actions = var.ecs_alarms_memory_utilization_low_ok_actions
 
+  alarm_description = var.ecs_alarm_description
+
   context = module.this.context
 }
 

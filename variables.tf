@@ -333,6 +333,12 @@ variable "ecs_alarms_enabled" {
   description = "Whether to enable SNS alarms for the ECS service."
 }
 
+variable "ecs_alarm_description" {
+  type        = string
+  default     = "Average service %v utilization %v last %f minute(s) over %v period(s)"
+  description = "The string to format and use as the ECS alarm description."
+}
+
 variable "ecs_alarms_cpu_utilization_high_threshold" {
   type        = number
   default     = 80
