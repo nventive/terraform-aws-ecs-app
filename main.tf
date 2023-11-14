@@ -33,6 +33,9 @@ module "alb_ingress" {
   health_check_protocol        = var.service_container_protocol
   default_target_group_enabled = true
   health_check_matcher         = var.health_check_matcher
+  stickiness_type              = var.alb_ingress_stickiness_type
+  stickiness_cookie_duration   = var.alb_ingress_stickiness_cookie_duration
+  stickiness_enabled           = var.alb_ingress_stickiness_enabled
 
   context    = module.this.context
   attributes = concat(module.this.attributes, [lower(var.service_container_protocol), var.service_container_port])

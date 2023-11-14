@@ -141,6 +141,24 @@ variable "alb_security_group_id" {
   description = "ALB security group id (to allow connection from the ALB to the service)."
 }
 
+variable "alb_ingress_stickiness_type" {
+  type        = string
+  default     = "lb_cookie"
+  description = "The type of sticky sessions. The only current possible value is `lb_cookie`"
+}
+
+variable "alb_ingress_stickiness_cookie_duration" {
+  type        = number
+  default     = 86400
+  description = "The time period, in seconds, during which requests from a client should be routed to the same target. After this time period expires, the load balancer-generated cookie is considered stale. The range is 1 second to 1 week (604800 seconds). The default value is 1 day (86400 seconds)"
+}
+
+variable "alb_ingress_stickiness_enabled" {
+  type        = bool
+  default     = true
+  description = "Boolean to enable / disable `stickiness`."
+}
+
 variable "ecs_cluster_name" {
   type        = string
   description = "The name of the ECS cluster."
