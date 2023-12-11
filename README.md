@@ -231,6 +231,8 @@ module "ecs_app" {
 | <a name="output_service_arn"></a> [service\_arn](#output\_service\_arn) | ECS Service ARN |
 | <a name="output_service_name"></a> [service\_name](#output\_service\_name) | ECS Service name |
 | <a name="output_task_definition_family"></a> [task\_definition\_family](#output\_task\_definition\_family) | ECS task definition family |
+| <a name="output_task_exec_role_arn"></a> [task\_exec\_role\_arn](#output\_task\_exec\_role\_arn) | ECS Task exec role ARN |
+| <a name="output_task_role_arn"></a> [task\_role\_arn](#output\_task\_role\_arn) | ECS Task role ARN |
 | <a name="output_url"></a> [url](#output\_url) | Full URL of the app |
 ## Breaking Changes
 
