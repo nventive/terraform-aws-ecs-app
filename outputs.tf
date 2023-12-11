@@ -27,3 +27,13 @@ output "ecs_service_security_group_id" {
   description = "The ID of the Security Group for the ECS service."
   value       = module.ecs_service_sg.id
 }
+
+output "task_exec_role_arn" {
+  value       = module.service.task_exec_role_arn
+  description = "ECS Task exec role ARN"
+}
+
+output "task_role_arn" {
+  value       = module.service.task_role_arn
+  description = "ECS Task role ARN"
+}
