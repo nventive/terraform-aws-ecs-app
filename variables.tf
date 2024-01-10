@@ -43,14 +43,69 @@ variable "service_container_protocol" {
   description = "Container protocol for the service."
 }
 
+variable "health_check_enabled" {
+  type        = bool
+  default     = true
+  description = "Indicates whether health checks are enabled. Defaults to `true`"
+}
+
 variable "healthcheck_path" {
   type        = string
-  description = "Path for the ALB health checks."
+  default     = null
+  description = <<-EOT
+    DEPRECATED: Use `health_check_path` instead.
+    Path for the ALB health checks.
+  EOT
 }
 
 variable "health_check_matcher" {
   type        = string
-  description = "The HTTP response codes to indicate a healthy check."
+  description = <<-EOT
+    The HTTP response codes to indicate a healthy check.
+    Example: `"200-399"`
+  EOT
+}
+
+variable "health_check_path" {
+  type        = string
+  default     = "/"
+  description = "The destination for the health check request"
+}
+
+variable "health_check_port" {
+  type        = string
+  default     = "traffic-port"
+  description = "The port to use to connect with the target. Valid values are either ports 1-65536, or `traffic-port`. Defaults to `traffic-port`"
+}
+
+variable "health_check_protocol" {
+  type        = string
+  default     = "HTTP"
+  description = "The protocol to use to connect with the target. Defaults to `HTTP`. Not applicable when `target_type` is `lambda`"
+}
+
+variable "health_check_timeout" {
+  type        = number
+  default     = 10
+  description = "The amount of time to wait in seconds before failing a health check request"
+}
+
+variable "health_check_healthy_threshold" {
+  type        = number
+  default     = 2
+  description = "The number of consecutive health checks successes required before healthy"
+}
+
+variable "health_check_unhealthy_threshold" {
+  type        = number
+  default     = 2
+  description = "The number of consecutive health check failures required before unhealthy"
+}
+
+variable "health_check_interval" {
+  type        = number
+  default     = 15
+  description = "The duration in seconds in between health checks"
 }
 
 variable "aliases" {
@@ -58,6 +113,7 @@ variable "aliases" {
   description = "List of FQDN's - Used to set the Alternate Domain Names (CNAMEs)."
   default     = []
 }
+
 variable "dns_alias_enabled" {
   type        = bool
   default     = false
