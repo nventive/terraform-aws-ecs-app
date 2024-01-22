@@ -75,6 +75,7 @@ module "ecs_app" {
   ])
 }
 ```
+
 ## Requirements
 
 | Name | Version |
@@ -85,11 +86,13 @@ module "ecs_app" {
 | <a name="requirement_null"></a> [null](#requirement\_null) | >= 2.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.7.0 |
+
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.0 |
+
 ## Modules
 
 | Name | Source | Version |
@@ -102,6 +105,7 @@ module "ecs_app" {
 | <a name="module_ecs_service_sg"></a> [ecs\_service\_sg](#module\_ecs\_service\_sg) | cloudposse/security-group/aws | 2.2.0 |
 | <a name="module_service"></a> [service](#module\_service) | cloudposse/ecs-alb-service-task/aws | 0.58.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
+
 ## Resources
 
 | Name | Type |
@@ -110,6 +114,7 @@ module "ecs_app" {
 | [aws_lb_listener.app](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener) | resource |
 | [aws_security_group_rule.opened_to_alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_lb.alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/lb) | data source |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -230,6 +235,7 @@ module "ecs_app" {
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | ID element \_(Rarely used, not included by default)\_. A customer identifier, indicating who this instance of a resource is for | `string` | `null` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID the DB instance will be created in. | `string` | n/a | yes |
 | <a name="input_wait_for_steady_state"></a> [wait\_for\_steady\_state](#input\_wait\_for\_steady\_state) | If true, it will wait for the service to reach a steady state (like aws ecs wait services-stable) before continuing. | `bool` | `false` | no |
+
 ## Outputs
 
 | Name | Description |
@@ -242,6 +248,7 @@ module "ecs_app" {
 | <a name="output_task_exec_role_arn"></a> [task\_exec\_role\_arn](#output\_task\_exec\_role\_arn) | ECS Task exec role ARN |
 | <a name="output_task_role_arn"></a> [task\_role\_arn](#output\_task\_role\_arn) | ECS Task role ARN |
 | <a name="output_url"></a> [url](#output\_url) | Full URL of the app |
+
 ## Breaking Changes
 
 Please consult [BREAKING\_CHANGES.md](BREAKING\_CHANGES.md) for more information about version
