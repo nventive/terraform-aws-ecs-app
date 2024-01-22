@@ -13,12 +13,19 @@ sections:
 
 content: |-
   {{ .Header }}
+  
   {{ .Requirements }}
+  
   {{ .Providers }}
+  
   {{ .Modules }}
+  
   {{ .Resources }}
+  
   {{ .Inputs }}
+  
   {{ .Outputs }}
+  
   {{ .Footer }}
 
 output:
