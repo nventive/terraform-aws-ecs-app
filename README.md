@@ -19,10 +19,12 @@ both if need be.
 
 ## Examples
 
-**IMPORTANT:** We do not pin modules to versions in our examples because of the difficulty of keeping the versions in
-the documentation in sync with the latest released versions. We highly recommend that in your code you pin the version
-to the exact version you are using so that your infrastructure remains stable, and update versions in a systematic way
-so that they do not catch you by surprise.
+> [!IMPORTANT]
+>
+> We do not pin modules to versions in our examples because of the difficulty of keeping the versions in
+> the documentation in sync with the latest released versions. We highly recommend that in your code you pin the version
+> to the exact version you are using so that your infrastructure remains stable, and update versions in a systematic way
+> so that they do not catch you by surprise.
 
 ```hcl
 module "container_definition_1" {
@@ -91,7 +93,7 @@ module "ecs_app" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.52.0 |
 
 ## Modules
 
@@ -135,7 +137,7 @@ module "ecs_app" {
 | <a name="input_alb_ingress_stickiness_cookie_duration"></a> [alb\_ingress\_stickiness\_cookie\_duration](#input\_alb\_ingress\_stickiness\_cookie\_duration) | The time period, in seconds, during which requests from a client should be routed to the same target. After this time period expires, the load balancer-generated cookie is considered stale. The range is 1 second to 1 week (604800 seconds). The default value is 1 day (86400 seconds) | `number` | `86400` | no |
 | <a name="input_alb_ingress_stickiness_enabled"></a> [alb\_ingress\_stickiness\_enabled](#input\_alb\_ingress\_stickiness\_enabled) | Boolean to enable / disable `stickiness`. | `bool` | `true` | no |
 | <a name="input_alb_ingress_stickiness_type"></a> [alb\_ingress\_stickiness\_type](#input\_alb\_ingress\_stickiness\_type) | The type of sticky sessions. The only current possible value is `lb_cookie` | `string` | `"lb_cookie"` | no |
-| <a name="input_alb_listeners"></a> [alb\_listeners](#input\_alb\_listeners) | A list of map containing a port and a protocol for all ALB listeners. | <pre>list(object({<br>    port     = number<br>    protocol = string<br>  }))</pre> | <pre>[<br>  {<br>    "port": 80,<br>    "protocol": "HTTP"<br>  }<br>]</pre> | no |
+| <a name="input_alb_listeners"></a> [alb\_listeners](#input\_alb\_listeners) | A list of map containing a port and a protocol and optionally a `default_action` for all ALB listeners. | <pre>list(object({<br>    port     = number<br>    protocol = string<br>    default_action = object({<br>      type             = string<br>      target_group_arn = optional(string)<br>      redirect = optional(object({<br>        host        = optional(string)<br>        path        = optional(string)<br>        port        = optional(string)<br>        protocol    = optional(string)<br>        query       = optional(string)<br>        status_code = string<br>      }))<br>      fixed_response = optional(object({<br>        content_type = string<br>        message_body = optional(string)<br>        status_code  = optional(string)<br>      }))<br>    })<br>  }))</pre> | <pre>[<br>  {<br>    "default_action": {<br>      "type": "forward"<br>    },<br>    "port": 80,<br>    "protocol": "HTTP"<br>  }<br>]</pre> | no |
 | <a name="input_alb_security_group_id"></a> [alb\_security\_group\_id](#input\_alb\_security\_group\_id) | ALB security group id (to allow connection from the ALB to the service). | `string` | n/a | yes |
 | <a name="input_aliases"></a> [aliases](#input\_aliases) | List of FQDN's - Used to set the Alternate Domain Names (CNAMEs). | `list(string)` | `[]` | no |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |

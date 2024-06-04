@@ -187,9 +187,36 @@ variable "alb_listeners" {
   type = list(object({
     port     = number
     protocol = string
+    default_action = object({
+      type             = string
+      target_group_arn = optional(string)
+      redirect = optional(object({
+        host        = optional(string)
+        path        = optional(string)
+        port        = optional(string)
+        protocol    = optional(string)
+        query       = optional(string)
+        status_code = string
+      }))
+      fixed_response = optional(object({
+        content_type = string
+        message_body = optional(string)
+        status_code  = optional(string)
+      }))
+    })
   }))
-  default     = [{ port = 80, protocol = "HTTP" }]
-  description = "A list of map containing a port and a protocol for all ALB listeners."
+  default = [{
+    port     = 80,
+    protocol = "HTTP"
+    default_action = {
+      type = "forward"
+    }
+  }]
+  validation {
+    condition     = alltrue([for listener in var.alb_listeners : contains(["forward", "redirect", "fixed_response"], listener.default_action.type)])
+    error_message = "The ALB listeners `default_action.type` must be one of `forward`, `redirect` or `fixed_response`."
+  }
+  description = "A list of map containing a port and a protocol and optionally a `default_action` for all ALB listeners."
 }
 
 variable "alb_security_group_id" {
