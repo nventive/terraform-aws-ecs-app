@@ -7,6 +7,9 @@ locals {
   enabled                  = module.this.enabled
   ecs_service_task_sg_name = "${module.this.id}-ecs-service-task"
   health_check_path        = var.healthcheck_path != null ? var.healthcheck_path : var.health_check_path
+
+  listener_target_group_arns = [for listener in var.alb_listeners : listener.default_action.target_group_arn]
+  default_action_types       = [for listener in var.alb_listeners : listener.default_action.type]
 }
 
 data "aws_lb" "alb" {
@@ -83,9 +86,42 @@ resource "aws_lb_listener" "app" {
   protocol          = var.alb_listeners[count.index].protocol
   certificate_arn   = var.alb_listeners[count.index].protocol == "HTTPS" ? module.acm_certificate.arn : null
 
-  default_action {
-    type             = "forward"
-    target_group_arn = module.alb_ingress.target_group_arn
+  dynamic "default_action" {
+    # This for_each basically acts as an if statement.
+    for_each = local.default_action_types[count.index] == "forward" ? range(1) : range(0)
+    content {
+      type             = var.alb_listeners[count.index].default_action.type
+      target_group_arn = try(length(local.listener_target_group_arns[count.index]) > 0, false) ? local.listener_target_group_arns[count.index] : module.alb_ingress.target_group_arn
+    }
+  }
+
+  dynamic "default_action" {
+    # This for_each basically acts as an if statement.
+    for_each = local.default_action_types[count.index] == "fixed_response" ? range(1) : range(0)
+    content {
+      type = var.alb_listeners[count.index].default_action.type
+      fixed_response {
+        content_type = var.alb_listeners[count.index].default_action.fixed_response["content_type"]
+        message_body = lookup(var.alb_listeners[count.index].default_action.fixed_response, "message_body", null)
+        status_code  = lookup(var.alb_listeners[count.index].default_action.fixed_response, "status_code", null)
+      }
+    }
+  }
+
+  dynamic "default_action" {
+    # This for_each basically acts as an if statement.
+    for_each = local.default_action_types[count.index] == "redirect" ? range(1) : range(0)
+    content {
+      type = var.alb_listeners[count.index].default_action.type
+      redirect {
+        host        = lookup(var.alb_listeners[count.index].default_action.redirect, "host", null)
+        path        = lookup(var.alb_listeners[count.index].default_action.redirect, "path", null)
+        port        = lookup(var.alb_listeners[count.index].default_action.redirect, "port", null)
+        protocol    = lookup(var.alb_listeners[count.index].default_action.redirect, "protocol", null)
+        query       = lookup(var.alb_listeners[count.index].default_action.redirect, "query", null)
+        status_code = var.alb_listeners[count.index].default_action.redirect["status_code"]
+      }
+    }
   }
 
   lifecycle {

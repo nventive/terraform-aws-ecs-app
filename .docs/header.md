@@ -18,10 +18,12 @@ both if need be.
 
 ## Examples
 
-**IMPORTANT:** We do not pin modules to versions in our examples because of the difficulty of keeping the versions in
-the documentation in sync with the latest released versions. We highly recommend that in your code you pin the version
-to the exact version you are using so that your infrastructure remains stable, and update versions in a systematic way
-so that they do not catch you by surprise.
+> [!IMPORTANT]
+> 
+> We do not pin modules to versions in our examples because of the difficulty of keeping the versions in
+> the documentation in sync with the latest released versions. We highly recommend that in your code you pin the version
+> to the exact version you are using so that your infrastructure remains stable, and update versions in a systematic way
+> so that they do not catch you by surprise.
 
 ```hcl
 module "container_definition_1" {
