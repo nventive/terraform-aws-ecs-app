@@ -86,6 +86,7 @@ resource "aws_lb_listener" "app" {
   port              = var.alb_listeners[count.index].port
   protocol          = var.alb_listeners[count.index].protocol
   certificate_arn   = var.alb_listeners[count.index].protocol == "HTTPS" ? module.acm_certificate.arn : null
+  ssl_policy        = var.alb_listeners[count.index].ssl_policy
 
   dynamic "default_action" {
     # This for_each basically acts as an if statement.

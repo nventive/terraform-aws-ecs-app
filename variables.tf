@@ -185,8 +185,9 @@ variable "alb_arn" {
 
 variable "alb_listeners" {
   type = list(object({
-    port     = number
-    protocol = string
+    port       = number
+    protocol   = string
+    ssl_policy = optional(string, null)
     default_action = object({
       type             = string
       target_group_arn = optional(string)
